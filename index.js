@@ -1,5 +1,9 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const { CAR_FIELDS } = require("./cars/const");
+const { validate } = require("./cars/validators");
+
+const { BRAND, MODEL, PRODUCTION_YEAR, OWNER_ID, ODOMETER } = CAR_FIELDS;
 
 const app = express();
 require("dotenv").config();
@@ -7,18 +11,18 @@ require("dotenv").config();
 const apiPrefix = "/api/v1";
 
 const mockCar = {
-  brand: "Volkswagen",
-  model: "Golf",
-  prod_year: 2008,
-  odometer: 223500,
-  owner_id: "zajebisty_kierowca",
+  BRAND: "Volkswagen",
+  MODEL: "Golf",
+  PRODUCTION_YEAR: 2008,
+  OWNER_ID: 223500,
+  ODOMETER: "zajebisty_kierowca",
 };
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
-  res.send("Jebac pis");
+  res.send("This is Servisso base API endpoint");
 });
 
 app.get(`${apiPrefix}/cars/:id`, (req, res) => {
@@ -29,17 +33,29 @@ app.get(`${apiPrefix}/cars/:id`, (req, res) => {
 });
 
 app.post(`${apiPrefix}/cars`, (req, res) => {
-  res.status(201).json({
-    ...req.body,
-    car_id: "newly_created_car",
-  });
+  const validationError = validate(req.body);
+
+  if (validationError) {
+    res.status(400).json({ error: validationError });
+  } else {
+    res.status(201).json({
+      ...req.body,
+      car_id: "newly_created_car",
+    });
+  }
 });
 
 app.put(`${apiPrefix}/cars/:id`, (req, res) => {
-  res.status(200).json({
-    ...req.body,
-    car_id: req.params.id,
-  });
+  const validationError = validate(req.body);
+
+  if (validationError) {
+    res.status(400).json({ error: validationError });
+  } else {
+    res.status(200).json({
+      ...req.body,
+      car_id: req.params.id,
+    });
+  }
 });
 
 app.delete(`${apiPrefix}/cars/:id`, (req, res) => {
