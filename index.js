@@ -3,7 +3,12 @@ const bodyParser = require("body-parser");
 const { CAR_FIELDS } = require("./cars/const");
 const { validate } = require("./cars/validators");
 
-const { getCar, createCar, deleteCar, updateCar } = require("./cars/db_controllers")
+const {
+  getCar,
+  createCar,
+  deleteCar,
+  updateCar,
+} = require("./cars/db_controllers");
 
 const { BRAND, MODEL, PRODUCTION_YEAR, OWNER_ID, ODOMETER } = CAR_FIELDS;
 
@@ -22,7 +27,6 @@ const mockCar = {
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
 
 app.get("/", async (req, res) => {
   res.send("This is Servisso base API endpoint");
@@ -50,7 +54,7 @@ app.post(`${apiPrefix}/cars`, async (req, res) => {
 
 app.put(`${apiPrefix}/cars/:id`, async (req, res) => {
   const validationError = validate(req.body);
-  
+
   if (validationError) {
     res.status(400).json({ error: validationError });
   } else {
@@ -64,7 +68,7 @@ app.delete(`${apiPrefix}/cars/:id`, async (req, res) => {
     await deleteCar(req.params.id);
     res.status(204).end();
   } catch (error) {
-    res.status(500).json({ error })
+    res.status(500).json({ error });
   }
 });
 
