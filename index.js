@@ -3,6 +3,9 @@ const bodyParser = require("body-parser");
 const { CAR_FIELDS } = require("./cars/const");
 const { validate } = require("./cars/validators");
 
+const firebaseConfig = require('./firebase_init');
+const { getFirestore, collection, getDocs, getDoc, doc } = require('firebase/firestore/lite');
+
 const { BRAND, MODEL, PRODUCTION_YEAR, OWNER_ID, ODOMETER } = CAR_FIELDS;
 
 const app = express();
@@ -21,14 +24,32 @@ const mockCar = {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+
+
+const db = getFirestore(firebaseConfig);
+
+async function getCar(id) {
+  const snap = await getDoc(doc(db, 'cars', id))
+  return snap.exists() ? snap.data() : {}
+}
+
+// async function getCars() {
+//   const carsCol = collection(db, 'cars');
+//   const carSnapshot = await getDocs(carsCol);
+//   const carList = carSnapshot.docs.map(doc => doc.data());
+//   return carList;
+// }
+
 app.get("/", (req, res) => {
   res.send("This is Servisso base API endpoint");
 });
 
-app.get(`${apiPrefix}/cars/:id`, (req, res) => {
+app.get(`${apiPrefix}/cars/:id`, async (req, res) => {
+  const car = await getCar(req.params.id);
+
   res.status(200).json({
-    ...mockCar,
-    car_id: req.params.id,
+    ...car,
+    id: req.params.id,
   });
 });
 
