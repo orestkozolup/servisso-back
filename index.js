@@ -4,7 +4,7 @@ const { CAR_FIELDS } = require("./cars/const");
 const { validate } = require("./cars/validators");
 
 const firebaseConfig = require('./firebase_init');
-const { getFirestore, collection, getDocs, getDoc, doc, setDoc, addDoc } = require('firebase/firestore/lite');
+const { getFirestore, collection, getDocs, getDoc, doc, setDoc, addDoc, deleteDoc } = require('firebase/firestore/lite');
 
 const { BRAND, MODEL, PRODUCTION_YEAR, OWNER_ID, ODOMETER } = CAR_FIELDS;
 
@@ -34,6 +34,10 @@ async function getCar(id) {
 async function createCar(data) {
   const docRef = await addDoc(collection(db, "cars"), data);
   return {...(await getDoc(docRef)).data(), id: docRef.id};
+}
+
+async function deleteCar(id){
+  await deleteDoc(doc(db, "cars", id));
 }
 
 async function getCars() {
@@ -80,8 +84,13 @@ app.put(`${apiPrefix}/cars/:id`, (req, res) => {
   }
 });
 
-app.delete(`${apiPrefix}/cars/:id`, (req, res) => {
-  res.status(204).end();
+app.delete(`${apiPrefix}/cars/:id`, async (req, res) => {
+  try {
+    await deleteCar(req.params.id);
+    res.status(204).end();
+  } catch (error) {
+    res.status(500).json({ error })
+  }
 });
 
 const port = process.env.PORT || 3000;
