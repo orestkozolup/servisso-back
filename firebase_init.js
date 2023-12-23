@@ -13,5 +13,7 @@ const firebaseConfig = {
   appId: "1:416973749351:web:8cba2aabf21ef67dc1a8c2"
 };
 
+const { getFirestore } = require('firebase/firestore/lite');
+
 // Initialize Firebase
-module.exports = initializeApp(firebaseConfig);
+module.exports = getFirestore(initializeApp(firebaseConfig));
