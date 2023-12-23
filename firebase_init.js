@@ -5,12 +5,12 @@ const { initializeApp } = require("firebase/app");
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCB_3c2uQuTGw14avDTt4vP4-mfCPmuII4",
-  authDomain: "servisso.firebaseapp.com",
-  projectId: "servisso",
-  storageBucket: "servisso.appspot.com",
-  messagingSenderId: "416973749351",
-  appId: "1:416973749351:web:8cba2aabf21ef67dc1a8c2",
+  apiKey: process.env.FIREBASE_API_KEY,
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.FIREBASE_PROJECT_ID,
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.FIREBASE_APP_ID,
 };
 
 const { getFirestore } = require("firebase/firestore/lite");

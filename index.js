@@ -3,6 +3,8 @@ const bodyParser = require("body-parser");
 const { CAR_FIELDS } = require("./cars/const");
 const { validate } = require("./cars/validators");
 
+require("dotenv").config();
+
 const {
   getCar,
   createCar,
@@ -13,7 +15,6 @@ const {
 const { BRAND, MODEL, PRODUCTION_YEAR, OWNER_ID, ODOMETER } = CAR_FIELDS;
 
 const app = express();
-require("dotenv").config();
 
 const apiPrefix = "/api/v1";
 
