@@ -15,13 +15,21 @@ async function getCar(id) {
 }
 
 async function createCar(data) {
-  const docRef = await addDoc(collection(db, "cars"), data);
+  const created_at = new Date().toISOString();
+  const docRef = await addDoc(collection(db, "cars"), {
+    ...data,
+    created_at,
+  });
   return { ...(await getDoc(docRef)).data(), id: docRef.id };
 }
 
 async function updateCar(id, data) {
+  const updated_at = new Date().toISOString();
   const docRef = doc(db, "cars", id);
-  await setDoc(docRef, data);
+  await setDoc(docRef, {
+    ...data,
+    updated_at,
+  });
   return { ...(await getDoc(docRef)).data(), id: docRef.id };
 }
 
