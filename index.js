@@ -36,6 +36,12 @@ async function createCar(data) {
   return {...(await getDoc(docRef)).data(), id: docRef.id};
 }
 
+async function updateCar(id, data) {
+  const docRef = doc(db, "cars", id);
+  await setDoc(docRef, data);
+  return {...(await getDoc(docRef)).data(), id: docRef.id};
+}
+
 async function deleteCar(id){
   await deleteDoc(doc(db, "cars", id));
 }
@@ -71,16 +77,14 @@ app.post(`${apiPrefix}/cars`, async (req, res) => {
   }
 });
 
-app.put(`${apiPrefix}/cars/:id`, (req, res) => {
+app.put(`${apiPrefix}/cars/:id`, async (req, res) => {
   const validationError = validate(req.body);
-
+  
   if (validationError) {
     res.status(400).json({ error: validationError });
   } else {
-    res.status(200).json({
-      ...req.body,
-      id: req.params.id,
-    });
+    const updatedCar = await updateCar(req.params.id, req.body);
+    res.status(200).json(updatedCar);
   }
 });
 
