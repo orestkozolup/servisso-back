@@ -48,7 +48,7 @@ app.get(`${apiPrefix}/cars/:id`, async (req, res) => {
   const car = await getCar(req.params.id);
 
   res.status(200).json({
-    ...mockCar,
+    ...car,
     id: req.params.id,
   });
 });
