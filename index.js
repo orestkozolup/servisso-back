@@ -4,7 +4,7 @@ const { CAR_FIELDS } = require("./cars/const");
 const { validate } = require("./cars/validators");
 
 const firebaseConfig = require('./firebase_init');
-const { getFirestore, collection, getDocs, getDoc, doc } = require('firebase/firestore/lite');
+const { getFirestore, collection, getDocs, getDoc, doc, setDoc, addDoc } = require('firebase/firestore/lite');
 
 const { BRAND, MODEL, PRODUCTION_YEAR, OWNER_ID, ODOMETER } = CAR_FIELDS;
 
@@ -14,17 +14,15 @@ require("dotenv").config();
 const apiPrefix = "/api/v1";
 
 const mockCar = {
-  BRAND: "Volkswagen",
-  MODEL: "Golf",
-  PRODUCTION_YEAR: 2008,
-  OWNER_ID: 223500,
-  ODOMETER: "zajebisty_kierowca",
+  BRAND: "Toyota",
+  MODEL: "Land Cruiser 200",
+  PRODUCTION_YEAR: 2018,
+  OWNER_ID: "banda_zlodziej",
+  ODOMETER: 176500,
 };
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-
 
 const db = getFirestore(firebaseConfig);
 
@@ -33,14 +31,19 @@ async function getCar(id) {
   return snap.exists() ? snap.data() : {}
 }
 
-// async function getCars() {
-//   const carsCol = collection(db, 'cars');
-//   const carSnapshot = await getDocs(carsCol);
-//   const carList = carSnapshot.docs.map(doc => doc.data());
-//   return carList;
-// }
+async function createCar(data) {
+  const docRef = await addDoc(collection(db, "cars"), data);
+  return {...(await getDoc(docRef)).data(), id: docRef.id};
+}
 
-app.get("/", (req, res) => {
+async function getCars() {
+  const carsCol = collection(db, 'cars');
+  const carSnapshot = await getDocs(carsCol);
+  const carList = carSnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+  return carList;
+}
+
+app.get("/", async (req, res) => {
   res.send("This is Servisso base API endpoint");
 });
 
@@ -53,16 +56,14 @@ app.get(`${apiPrefix}/cars/:id`, async (req, res) => {
   });
 });
 
-app.post(`${apiPrefix}/cars`, (req, res) => {
+app.post(`${apiPrefix}/cars`, async (req, res) => {
   const validationError = validate(req.body);
+  const car = await createCar(req.body);
 
   if (validationError) {
     res.status(400).json({ error: validationError });
   } else {
-    res.status(201).json({
-      ...req.body,
-      id: "newly_created_car",
-    });
+    res.status(201).json(car);
   }
 });
 
