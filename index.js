@@ -48,7 +48,7 @@ app.get(`${apiPrefix}/cars/:id`, async (req, res) => {
   const car = await getCar(req.params.id);
 
   res.status(200).json({
-    ...car,
+    ...mockCar,
     id: req.params.id,
   });
 });
@@ -61,7 +61,7 @@ app.post(`${apiPrefix}/cars`, (req, res) => {
   } else {
     res.status(201).json({
       ...req.body,
-      car_id: "newly_created_car",
+      id: "newly_created_car",
     });
   }
 });
@@ -74,7 +74,7 @@ app.put(`${apiPrefix}/cars/:id`, (req, res) => {
   } else {
     res.status(200).json({
       ...req.body,
-      car_id: req.params.id,
+      id: req.params.id,
     });
   }
 });
