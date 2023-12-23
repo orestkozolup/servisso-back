@@ -3,8 +3,7 @@ const bodyParser = require("body-parser");
 const { CAR_FIELDS } = require("./cars/const");
 const { validate } = require("./cars/validators");
 
-const firebaseConfig = require('./firebase_init');
-const { getFirestore, collection, getDocs, getDoc, doc, setDoc, addDoc, deleteDoc } = require('firebase/firestore/lite');
+const { getCar, createCar, deleteCar, updateCar } = require("./cars/db_controllers")
 
 const { BRAND, MODEL, PRODUCTION_YEAR, OWNER_ID, ODOMETER } = CAR_FIELDS;
 
@@ -24,34 +23,6 @@ const mockCar = {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const db = getFirestore(firebaseConfig);
-
-async function getCar(id) {
-  const snap = await getDoc(doc(db, 'cars', id))
-  return snap.exists() ? snap.data() : {}
-}
-
-async function createCar(data) {
-  const docRef = await addDoc(collection(db, "cars"), data);
-  return {...(await getDoc(docRef)).data(), id: docRef.id};
-}
-
-async function updateCar(id, data) {
-  const docRef = doc(db, "cars", id);
-  await setDoc(docRef, data);
-  return {...(await getDoc(docRef)).data(), id: docRef.id};
-}
-
-async function deleteCar(id){
-  await deleteDoc(doc(db, "cars", id));
-}
-
-async function getCars() {
-  const carsCol = collection(db, 'cars');
-  const carSnapshot = await getDocs(carsCol);
-  const carList = carSnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
-  return carList;
-}
 
 app.get("/", async (req, res) => {
   res.send("This is Servisso base API endpoint");
