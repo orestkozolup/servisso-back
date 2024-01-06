@@ -6,7 +6,7 @@ const {
   addDoc,
   deleteDoc,
 } = require("firebase/firestore/lite");
-const db = require("../firebase_init");
+const db = require("../firebase_db/index");
 
 async function getCar(id) {
   const carSnap = await getDoc(doc(db, "cars", id));
