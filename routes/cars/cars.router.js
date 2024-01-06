@@ -5,7 +5,7 @@ const {
   createCar,
   updateCar,
   deleteCar,
-} = require("../controllers/cars.controller");
+} = require("./cars.controller");
 
 const carsRouter = express.Router();
 

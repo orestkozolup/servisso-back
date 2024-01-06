@@ -1,5 +1,5 @@
-const { validate } = require("../cars/validators");
-const model = require("../models/cars.model");
+const { validate } = require("../../cars/validators");
+const model = require("../../models/cars.model");
 
 async function getCar(req, res) {
   const car = await model.getCar(req.params.id);
