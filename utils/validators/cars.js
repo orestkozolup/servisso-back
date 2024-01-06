@@ -1,4 +1,4 @@
-const { CAR_FIELDS } = require("./const");
+const { CAR_FIELDS } = require("../../const/cars");
 
 module.exports = {
   validate: (payload) => {
