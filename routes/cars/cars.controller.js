@@ -27,7 +27,11 @@ async function createCar(req, res) {
   }
 
   try {
-    const car = await model.createCar(req.body);
+    const carData = {
+      ...req.body,
+      created_at: new Date().toISOString(),
+    };
+    const car = await model.createCar(carData);
     res.status(201).json(car);
   } catch (error) {
     res.status(500).json({ error });
@@ -43,7 +47,11 @@ async function updateCar(req, res) {
   }
 
   try {
-    const updatedCar = await model.updateCar(req.params.id, req.body);
+    const carData = {
+      ...req.body,
+      updated_at: new Date().toISOString(),
+    };
+    const updatedCar = await model.updateCar(req.params.id, carData);
     res.status(201).json(updatedCar);
   } catch (error) {
     res.status(500).json({ error });
