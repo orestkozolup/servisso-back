@@ -2,12 +2,20 @@ const { validate } = require("../../utils/validators/cars");
 const model = require("../../models/cars.model");
 
 async function getCar(req, res) {
-  const car = await model.getCar(req.params.id);
+  try {
+    const car = await model.getCar(req.params.id);
 
-  res.status(200).json({
-    ...car,
-    id: req.params.id,
-  });
+    if (Object.keys(car).length === 0) {
+      res.status(404).end();
+    } else {
+      res.status(200).json({
+        ...car,
+        id: req.params.id,
+      });
+    }
+  } catch (error) {
+    res.status(500).json({ error });
+  }
 }
 
 async function createCar(req, res) {
@@ -18,9 +26,12 @@ async function createCar(req, res) {
     return;
   }
 
-  const car = await model.createCar(req.body);
-
-  res.status(201).json(car);
+  try {
+    const car = await model.createCar(req.body);
+    res.status(201).json(car);
+  } catch (error) {
+    res.status(500).json({ error });
+  }
 }
 
 async function updateCar(req, res) {
@@ -31,9 +42,12 @@ async function updateCar(req, res) {
     return;
   }
 
-  const updatedCar = await model.updateCar(req.params.id, req.body);
-
-  res.status(200).json(updatedCar);
+  try {
+    const updatedCar = await model.updateCar(req.params.id, req.body);
+    res.status(201).json(updatedCar);
+  } catch (error) {
+    res.status(500).json({ error });
+  }
 }
 
 async function deleteCar(req, res) {
