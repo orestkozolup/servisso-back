@@ -1,20 +1,19 @@
-const { validate } = require("../../utils/validators/cars");
+const { validate } = require("../../utils/validators/vehicles");
 const model = require("../../models/vehicles.model");
 
 async function getVehicle(req, res) {
   try {
-    const car = await model.getVehicle(req.params.id);
+    const vehicle = await model.getVehicle(req.params.id);
 
-    if (Object.keys(car).length === 0) {
+    if (Object.keys(vehicle).length === 0) {
       res.status(404).end();
     } else {
       res.status(200).json({
-        ...car,
+        ...vehicle,
         id: req.params.id,
       });
     }
   } catch (error) {
-    console.log('EEEEEEEEEEEEEEEEEEEEEE', error)
     res.status(500).json({ error });
   }
 }
@@ -28,12 +27,12 @@ async function createVehicle(req, res) {
   }
 
   try {
-    const carData = {
+    const vehicleData = {
       ...req.body,
       created_at: new Date().toISOString(),
     };
-    const car = await model.createVehicle(carData);
-    res.status(201).json(car);
+    const vehicle = await model.createVehicle(vehicleData);
+    res.status(201).json(vehicle);
   } catch (error) {
     res.status(500).json({ error });
   }
@@ -48,12 +47,12 @@ async function updateVehicle(req, res) {
   }
 
   try {
-    const carData = {
+    const vehicleData = {
       ...req.body,
       updated_at: new Date().toISOString(),
     };
-    const updatedCar = await model.updateVehicle(req.params.id, carData);
-    res.status(201).json(updatedCar);
+    const updatedVehicle = await model.updateVehicle(req.params.id, vehicleData);
+    res.status(201).json(updatedVehicle);
   } catch (error) {
     res.status(500).json({ error });
   }

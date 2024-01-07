@@ -1,28 +1,28 @@
 const { db } = require("../firebase_setup/index");
 
 async function getVehicle(id) {
-  const carSnap = await db.collection("cars").doc(id).get();
-  return carSnap.exists ? carSnap.data() : {};
+  const vehicleSnap = await db.collection("vehicles").doc(id).get();
+  return vehicleSnap.exists ? vehicleSnap.data() : {};
 }
 
-async function createVehicle(carData) {
-  const newCarRef = db.collection("cars").doc();
-  await newCarRef.set(carData);
-  const newCar = await newCarRef.get();
+async function createVehicle(vehicleData) {
+  const newVehicleRef = db.collection("vehicles").doc();
+  await newVehicleRef.set(vehicleData);
+  const newVehicle = await newVehicleRef.get();
 
-  return { ...newCar.data(), id: newCarRef.id };
+  return { ...newVehicle.data(), id: newVehicle.id };
 }
 
-async function updateVehicle(id, carData) {
-  const updatedCarRef = db.collection("cars").doc(id);
-  await updatedCarRef.set(carData);
-  const updatedCar = await updatedCarRef.get();
+async function updateVehicle(id, vehicleData) {
+  const updatedVehicleRef = db.collection("vehicles").doc(id);
+  await updatedVehicleRef.set(vehicleData);
+  const updatedVehicle = await updatedVehicleRef.get();
 
-  return { ...updatedCar.data(), id: updatedCarRef.id };
+  return { ...updatedVehicle.data(), id: updatedVehicleRef.id };
 }
 
 async function deleteVehicle(id) {
-  await db.collection("cars").doc(id).delete();
+  await db.collection("vehicles").doc(id).delete();
 }
 
 module.exports = {

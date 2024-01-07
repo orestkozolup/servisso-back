@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.get("/", async (req, res) => {
   res.send("This is Servisso base API endpoint");
 });
-app.use(`${apiPrefix}/cars`, vehiclesRouter);
+app.use(`${apiPrefix}/vehicles`, vehiclesRouter);
 
 // Start server
 const port = process.env.PORT || 3000;
