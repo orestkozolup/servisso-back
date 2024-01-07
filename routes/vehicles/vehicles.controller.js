@@ -1,9 +1,9 @@
 const { validate } = require("../../utils/validators/cars");
-const model = require("../../models/cars.model");
+const model = require("../../models/vehicles.model");
 
-async function getCar(req, res) {
+async function getVehicle(req, res) {
   try {
-    const car = await model.getCar(req.params.id);
+    const car = await model.getVehicle(req.params.id);
 
     if (Object.keys(car).length === 0) {
       res.status(404).end();
@@ -14,11 +14,12 @@ async function getCar(req, res) {
       });
     }
   } catch (error) {
+    console.log('EEEEEEEEEEEEEEEEEEEEEE', error)
     res.status(500).json({ error });
   }
 }
 
-async function createCar(req, res) {
+async function createVehicle(req, res) {
   const validationError = validate(req.body);
 
   if (validationError) {
@@ -31,14 +32,14 @@ async function createCar(req, res) {
       ...req.body,
       created_at: new Date().toISOString(),
     };
-    const car = await model.createCar(carData);
+    const car = await model.createVehicle(carData);
     res.status(201).json(car);
   } catch (error) {
     res.status(500).json({ error });
   }
 }
 
-async function updateCar(req, res) {
+async function updateVehicle(req, res) {
   const validationError = validate(req.body);
 
   if (validationError) {
@@ -51,16 +52,16 @@ async function updateCar(req, res) {
       ...req.body,
       updated_at: new Date().toISOString(),
     };
-    const updatedCar = await model.updateCar(req.params.id, carData);
+    const updatedCar = await model.updateVehicle(req.params.id, carData);
     res.status(201).json(updatedCar);
   } catch (error) {
     res.status(500).json({ error });
   }
 }
 
-async function deleteCar(req, res) {
+async function deleteVehicle(req, res) {
   try {
-    await model.deleteCar(req.params.id);
+    await model.deleteVehicle(req.params.id);
     res.status(204).end();
   } catch (error) {
     res.status(500).json({ error });
@@ -68,8 +69,8 @@ async function deleteCar(req, res) {
 }
 
 module.exports = {
-  getCar,
-  createCar,
-  updateCar,
-  deleteCar,
+  getVehicle,
+  createVehicle,
+  updateVehicle,
+  deleteVehicle,
 };
