@@ -10,7 +10,7 @@ async function createVehicle(vehicleData) {
   await newVehicleRef.set(vehicleData);
   const newVehicle = await newVehicleRef.get();
 
-  return { ...newVehicle.data(), id: newVehicle.id };
+  return { ...newVehicle.data(), id: newVehicleRef.id };
 }
 
 async function updateVehicle(id, vehicleData) {

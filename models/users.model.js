@@ -1,0 +1,33 @@
+const { db } = require("../firebase_setup/index");
+
+async function getUser(id) {
+  const userSnap = await db.collection("users").doc(id).get();
+  return userSnap.exists ? userSnap.data() : {};
+}
+
+async function createUser(userData) {
+  const newUserRef = db.collection("users").doc();
+  await newUserRef.set(userData);
+  const newUser = await newUserRef.get();
+
+  return { ...newUser.data(), id: newUserRef.id };
+}
+
+async function updateUser(id, userData) {
+  const updatedUserRef = db.collection("users").doc(id);
+  await updatedUserRef.set(userData);
+  const updatedUser = await updatedUserRef.get();
+
+  return { ...updatedUser.data(), id: updatedUserRef.id };
+}
+
+async function deleteUser(id) {
+  await db.collection("users").doc(id).delete();
+}
+
+module.exports = {
+  getUser,
+  createUser,
+  updateUser,
+  deleteUser,
+};
