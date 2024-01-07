@@ -1,15 +1,15 @@
-const { validate } = require("../../utils/validators/cars");
-const model = require("../../models/cars.model");
+const { validate } = require("../../utils/validators/vehicles");
+const model = require("../../models/vehicles.model");
 
-async function getCar(req, res) {
+async function getVehicle(req, res) {
   try {
-    const car = await model.getCar(req.params.id);
+    const vehicle = await model.getVehicle(req.params.id);
 
-    if (Object.keys(car).length === 0) {
+    if (Object.keys(vehicle).length === 0) {
       res.status(404).end();
     } else {
       res.status(200).json({
-        ...car,
+        ...vehicle,
         id: req.params.id,
       });
     }
@@ -18,7 +18,7 @@ async function getCar(req, res) {
   }
 }
 
-async function createCar(req, res) {
+async function createVehicle(req, res) {
   const validationError = validate(req.body);
 
   if (validationError) {
@@ -27,18 +27,18 @@ async function createCar(req, res) {
   }
 
   try {
-    const carData = {
+    const vehicleData = {
       ...req.body,
       created_at: new Date().toISOString(),
     };
-    const car = await model.createCar(carData);
-    res.status(201).json(car);
+    const vehicle = await model.createVehicle(vehicleData);
+    res.status(201).json(vehicle);
   } catch (error) {
     res.status(500).json({ error });
   }
 }
 
-async function updateCar(req, res) {
+async function updateVehicle(req, res) {
   const validationError = validate(req.body);
 
   if (validationError) {
@@ -47,20 +47,20 @@ async function updateCar(req, res) {
   }
 
   try {
-    const carData = {
+    const vehicleData = {
       ...req.body,
       updated_at: new Date().toISOString(),
     };
-    const updatedCar = await model.updateCar(req.params.id, carData);
-    res.status(201).json(updatedCar);
+    const updatedVehicle = await model.updateVehicle(req.params.id, vehicleData);
+    res.status(201).json(updatedVehicle);
   } catch (error) {
     res.status(500).json({ error });
   }
 }
 
-async function deleteCar(req, res) {
+async function deleteVehicle(req, res) {
   try {
-    await model.deleteCar(req.params.id);
+    await model.deleteVehicle(req.params.id);
     res.status(204).end();
   } catch (error) {
     res.status(500).json({ error });
@@ -68,8 +68,8 @@ async function deleteCar(req, res) {
 }
 
 module.exports = {
-  getCar,
-  createCar,
-  updateCar,
-  deleteCar,
+  getVehicle,
+  createVehicle,
+  updateVehicle,
+  deleteVehicle,
 };
