@@ -6,8 +6,10 @@ const {
   updateCar,
   deleteCar,
 } = require("./cars.controller");
+const verifyAuth = require("../../middleware/auth");
 
 const carsRouter = express.Router();
+carsRouter.use(verifyAuth);
 
 carsRouter.get("/:id", getCar);
 carsRouter.post("/", createCar);
