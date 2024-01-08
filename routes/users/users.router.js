@@ -9,7 +9,7 @@ const {
 const verifyAuth = require("../../middleware/auth");
 
 const usersRouter = express.Router();
-usersRouter.use(verifyAuth);
+// usersRouter.use(verifyAuth);
 
 usersRouter.get("/:id", getUser);
 usersRouter.post("/", createUser);

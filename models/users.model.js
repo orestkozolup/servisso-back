@@ -6,11 +6,10 @@ async function getUser(id) {
 }
 
 async function createUser(userData) {
-  const newUserRef = db.collection("users").doc();
-  await newUserRef.set(userData);
-  const newUser = await newUserRef.get();
+  await db.collection("users").doc(userData.id).set(userData);
+  const newUserSnap = await db.collection("users").doc(userData.id).get();
 
-  return { ...newUser.data(), id: newUserRef.id };
+  return newUserSnap.exists ? newUserSnap.data() : {};
 }
 
 async function updateUser(id, userData) {
