@@ -9,7 +9,7 @@ const {
 const verifyAuth = require("../../middleware/auth");
 
 const vehiclesRouter = express.Router();
-// vehiclesRouter.use(verifyAuth);
+vehiclesRouter.use(verifyAuth);
 
 vehiclesRouter.get("/:id", getVehicle);
 vehiclesRouter.post("/", createVehicle);
