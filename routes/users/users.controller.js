@@ -67,9 +67,18 @@ async function deleteUser(req, res) {
   }
 }
 
+async function getUsersVehicles(req, res) {
+  try {
+    const vehicles = await model.getUsersVehicles();
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+}
+
 module.exports = {
   getUser,
   createUser,
   updateUser,
   deleteUser,
+  getUsersVehicles,
 };

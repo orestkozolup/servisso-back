@@ -24,6 +24,11 @@ async function deleteUser(id) {
   await db.collection("users").doc(id).delete();
 }
 
+async function getUsersVehicles() {
+  const citiesRef = db.collection('cities');
+const snapshot = await citiesRef.where('capital', '==', true).get();
+}
+
 module.exports = {
   getUser,
   createUser,
