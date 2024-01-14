@@ -6,11 +6,15 @@ async function getVehicle(id) {
 }
 
 async function createVehicle(vehicleData) {
-  const newVehicleRef = db.collection("vehicles").doc();
-  await newVehicleRef.set(vehicleData);
-  const newVehicle = await newVehicleRef.get();
+  try {
+    const newVehicleRef = db.collection("vehicles").doc();
+    await newVehicleRef.set(vehicleData);
+    const newVehicle = await newVehicleRef.get();
 
-  return { ...newVehicle.data(), id: newVehicleRef.id };
+    return { ...newVehicle.data(), id: newVehicleRef.id };
+  } catch (e) {
+    throw new Error('Error in vehicle creation');
+  }
 }
 
 async function updateVehicle(id, vehicleData) {

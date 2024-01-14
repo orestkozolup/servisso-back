@@ -24,9 +24,29 @@ async function deleteUser(id) {
   await db.collection("users").doc(id).delete();
 }
 
+async function assignVehicleToUser(vehicleId, userId) {
+  try {
+    const userSnap = await db.collection("users").doc(userId).get();
+
+    if (!userSnap.exists) {
+      throw new Error(`User ${userId} not found`);
+    }
+    const user = userSnap.data();
+
+    const userWithNewVehicle = {
+      ...user,
+      vehicleIdList: [...user.vehicleIdList, vehicleId],
+    };
+
+    await db.collection("users").doc(userId).set(userWithNewVehicle);
+  } catch (e) {
+    return new Error(`Error while assigning vehicle`);
+  }
+}
+
 async function getUsersVehicles() {
-  const citiesRef = db.collection('cities');
-const snapshot = await citiesRef.where('capital', '==', true).get();
+  const citiesRef = db.collection("cities");
+  const snapshot = await citiesRef.where("capital", "==", true).get();
 }
 
 module.exports = {
@@ -34,4 +54,5 @@ module.exports = {
   createUser,
   updateUser,
   deleteUser,
+  assignVehicleToUser,
 };
