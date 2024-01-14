@@ -5,6 +5,7 @@ module.exports = {
     EMAIL: "email",
     ID: "id",
     VEHICLE_ID_LIST: "vehicleIdList",
-    SERVICES_ID_LIST: "servicesIdList"
+    SERVICES_ID_LIST: "servicesIdList",
   },
+  USERS_COLLECTION: "users",
 };
