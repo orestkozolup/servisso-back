@@ -13,7 +13,7 @@ async function createVehicle(vehicleData) {
 
     return { ...newVehicle.data(), id: newVehicleRef.id };
   } catch (e) {
-    throw new Error('Error in vehicle creation');
+    throw new Error("Error in vehicle creation");
   }
 }
 
@@ -29,9 +29,25 @@ async function deleteVehicle(id) {
   await db.collection("vehicles").doc(id).delete();
 }
 
+async function getVehiclesByOwnerId(ownerId) {
+  const vehicles = [];
+  const snapshot = await db
+    .collection("vehicles")
+    .where("owner_id", "==", ownerId)
+    .get();
+  snapshot.forEach((doc) => {
+    if (!snapshot.empty) {
+      vehicles.push(doc.data());
+    }
+  });
+
+  return vehicles;
+}
+
 module.exports = {
   getVehicle,
   createVehicle,
   updateVehicle,
   deleteVehicle,
+  getVehiclesByOwnerId,
 };

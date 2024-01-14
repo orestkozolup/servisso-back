@@ -44,11 +44,6 @@ async function assignVehicleToUser(vehicleId, userId) {
   }
 }
 
-async function getUsersVehicles() {
-  const citiesRef = db.collection("cities");
-  const snapshot = await citiesRef.where("capital", "==", true).get();
-}
-
 module.exports = {
   getUser,
   createUser,
