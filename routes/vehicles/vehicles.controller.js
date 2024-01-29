@@ -31,6 +31,7 @@ async function createVehicle(req, res) {
     const vehicleData = {
       ...req.body,
       created_at: new Date().toISOString(),
+      runtimeType: "default"
     };
     const vehicle = await vehicleModel.createVehicle(vehicleData);
     await userModel.assignVehicleToUser(vehicle.id, vehicle.owner_id);
