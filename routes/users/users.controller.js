@@ -72,7 +72,7 @@ async function getUsersVehicles(req, res) {
   try {
     const vehicles = await vehicleModel.getVehiclesByOwnerId(req.params.id);
     if (vehicles.length === 0) {
-      res.status(404).end();
+      res.status(200).json([]);
     } else {
       res.status(200).json(vehicles);
     }

@@ -38,7 +38,7 @@ async function getVehiclesByOwnerId(ownerId) {
     .get();
   snapshot.forEach((doc) => {
     if (!snapshot.empty) {
-      vehicles.push(doc.data());
+      vehicles.push({ id: doc.id, ...doc.data() });
     }
   });
 
