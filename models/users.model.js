@@ -48,10 +48,31 @@ async function assignVehicleToUser(vehicleId, userId) {
   }
 }
 
+async function unAssignVehicleFromUser(vehicleId, userId) {
+  try {
+    const userSnap = await db.collection(USERS_COLLECTION).doc(userId).get();
+
+    if (!userSnap.exists) {
+      throw new Error(`User ${userId} not found`);
+    }
+    const user = userSnap.data();
+
+    const userWithNewVehicle = {
+      ...user,
+      vehicleIdList: user.vehicleIdList.filter(id => id !==vehicleId),
+    };
+
+    await db.collection(USERS_COLLECTION).doc(userId).set(userWithNewVehicle);
+  } catch (e) {
+    return new Error(`Error while unassigning vehicle`);
+  }
+}
+
 module.exports = {
   getUser,
   createUser,
   updateUser,
   deleteUser,
   assignVehicleToUser,
+  unAssignVehicleFromUser
 };

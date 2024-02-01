@@ -66,7 +66,10 @@ async function updateVehicle(req, res) {
 
 async function deleteVehicle(req, res) {
   try {
+    const vehicle = await vehicleModel.getVehicle(req.params.id);
     await vehicleModel.deleteVehicle(req.params.id);
+    await userModel.unAssignVehicleFromUser(req.params.id, vehicle.owner_id)
+
     res.status(204).end();
   } catch (error) {
     res.status(500).json({ error });
