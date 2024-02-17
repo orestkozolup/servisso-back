@@ -4,6 +4,7 @@ require("dotenv").config();
 
 const vehiclesRouter = require("./routes/vehicles/vehicles.router");
 const usersRouter = require("./routes/users/users.router");
+const servicesRouter = require("./routes/services/services.router");
 
 // Setup
 const app = express();
@@ -19,6 +20,7 @@ app.get("/", async (req, res) => {
 });
 app.use(`${apiPrefix}/vehicles`, vehiclesRouter);
 app.use(`${apiPrefix}/users`, usersRouter);
+app.use(`${apiPrefix}/services`, servicesRouter);
 
 // Start server
 const port = process.env.PORT || 3000;
