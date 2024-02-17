@@ -6,7 +6,7 @@ const {
 const verifyAuth = require("../../middleware/auth");
 
 const servicesRouter = express.Router();
-// servicesRouter.use(verifyAuth);
+servicesRouter.use(verifyAuth);
 
 servicesRouter.get("/:id", getService);
 
